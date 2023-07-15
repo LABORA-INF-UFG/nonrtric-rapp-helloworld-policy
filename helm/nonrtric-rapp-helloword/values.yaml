@@ -1,0 +1,17 @@
+image:
+  repository: zanattabruno/nonrtric-rapp-helloword
+  tag: 0.0.1
+  imagePullPolicy: Always
+service:
+  name: myapp
+  port: 80
+  type: ClusterIP
+
+config:
+  base_url_rApp_catalogue: 'http://rappcatalogueservice.nonrtric.svc.cluster.local:9085/services'
+  base_url_pms: 'http://policymanagementservice.nonrtric.svc.cluster.local:9080/a1-policy/v2'
+  type_to_use: '2'
+  ric_to_use: "ric4"
+  body_type_to_use: '2'
+  body_path_to_use: 'pihw_template.json'
+  policy_id_to_use: '1'

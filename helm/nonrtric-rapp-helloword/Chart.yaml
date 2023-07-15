@@ -1,0 +1,5 @@
+apiVersion: v2
+name: nonrtric-rapp-helloword
+description: A Helm chart for Non-RT RIC rApp Hello Word
+version: 0.1.0
+appVersion: 0.0.1

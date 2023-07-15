@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-config
+  labels:
+    {{- include "nonrtric-rapp-helloword.labels" . | nindent 4 }}
+data:
+  config.yaml: |
+    base_url_pms: "{{ .Values.config.base_url_pms }}"
+    base_url_rApp_catalogue: "{{ .Values.config.base_url_rApp_catalogue }}"
+    type_to_use: "{{ .Values.config.type_to_use }}"
+    ric_to_use: "{{ .Values.config.ric_to_use }}"
+    body_type_to_use: "{{ .Values.config.body_type_to_use }}"
+    body_path_to_use: "{{ .Values.config.body_path_to_use }}"
+    policy_id_to_use: "{{ .Values.config.policy_id_to_use }}"

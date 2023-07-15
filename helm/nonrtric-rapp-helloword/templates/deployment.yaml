@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "nonrtric-rapp-helloword.fullname" . }}
+  labels:
+    {{- include "nonrtric-rapp-helloword.labels" . | nindent 4 }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}
+    spec:
+      containers:
+        - name: {{ .Release.Name }}-container
+          image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+          imagePullPolicy: {{ .Values.image.imagePullPolicy }}
+          ports:
+            - containerPort: {{ .Values.service.port }}
+          volumeMounts:
+            - name: config-volume
+              mountPath: /app/config
+          args: ["python", "-u", "/app/main.py"]
+          #args: ["sleep", "600000"]
+      volumes:
+        - name: config-volume
+          configMap:
+            name: {{ .Release.Name }}-config
