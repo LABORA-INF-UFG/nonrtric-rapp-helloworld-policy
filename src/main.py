@@ -6,6 +6,7 @@ import json
 import os
 import pprint
 import time
+import yaml
 
 VERSION: str = '0.0.1'
 SERVICE_NAME:str = 'HelloWordrApp'
@@ -193,6 +194,23 @@ if __name__ == '__main__':
     except ConnectionError:
         print(f'A1 Policy Manager is not answering on {base_url_pms}, cannot start!')
     
+
+    if not os.path.exists('config.yaml'):
+        print(f'Config file config.yaml does not exist, using default configuration or parameters.')
+    else:
+        print(f'Using configurations from config.yaml.')
+
+        with open('config.yaml', 'r') as f:
+            config = yaml.safe_load(f)
+
+        base_url_rApp_catalogue = config['base_url_rApp_catalogue']
+        base_url_pms = config['base_url_pms']
+        type_to_use = config['type_to_use']
+        ric_to_use = config['ric_to_use']
+        body_type_to_use = config['body_type_to_use']
+        body_path_to_use = config['body_path_to_use']
+        policy_id_to_use = config['policy_id_to_use']
+
     print(f'base_url_rApp_catalogue: {base_url_rApp_catalogue}')
     print(f'base_url_pms: {base_url_pms}')
     print(f'type_to_use: {type_to_use}')
