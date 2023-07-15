@@ -172,21 +172,6 @@ if __name__ == '__main__':
     else:
         body_type_to_use = DEFAULT_POLICY_BODY_PATH
 
-    if args["policyBodyPath"]:
-        body_path_to_use = args["policyBodyPath"]
-        if not os.path.exists(body_path_to_use):
-            print(f'Policy body {body_path_to_use} does not exist.')
-            sys.exit(1)
-    else:
-        body_type_to_use = DEFAULT_POLICY_BODY_PATH
-        if not os.path.exists(body_path_to_use):
-            print(f'Policy body {body_path_to_use} does not exist.')
-            sys.exit(1)
-
-    with open(body_type_to_use) as json_file:
-        policy_data = json_file.read()
-        verboseprint(f'Policy body: {policy_data}')
-
     try:
         rics_from_agent = get_rics_from_agent()
         verboseprint(f'Got RICs from agent: {rics_from_agent}')
@@ -195,12 +180,12 @@ if __name__ == '__main__':
         print(f'A1 Policy Manager is not answering on {base_url_pms}, cannot start!')
     
 
-    if not os.path.exists('config.yaml'):
+    if not os.path.exists('config/config.yaml'):
         print(f'Config file config.yaml does not exist, using default configuration or parameters.')
     else:
         print(f'Using configurations from config.yaml.')
 
-        with open('config.yaml', 'r') as f:
+        with open('config/config.yaml', 'r') as f:
             config = yaml.safe_load(f)
 
         base_url_rApp_catalogue = config['base_url_rApp_catalogue']
@@ -218,6 +203,10 @@ if __name__ == '__main__':
     print(f'body_type_to_use: {body_type_to_use}')
     print(f'body_path_to_use: {body_path_to_use}')
     print(f'policy_id_to_use: {policy_id_to_use}')
+
+    with open(body_path_to_use) as json_file:
+        policy_data = json_file.read()
+        verboseprint(f'Policy body: {policy_data}')
 
     print(f'Registring in rApp catalog  {SERVICE_NAME}')
     register_service_rApp_catalalogue()
