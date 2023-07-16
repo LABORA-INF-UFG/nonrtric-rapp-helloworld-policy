@@ -32,13 +32,15 @@ body_type_to_use = DEFAULT_POLICY_TYPE_ID
 body_path_to_use = DEFAULT_POLICY_BODY_PATH
 policy_id_to_use = DEFAULT_POLICY_ID
 
-# This function GitHub Copilot: This function is called `register_service_rApp_catalalogue()`
-# and it is written in Python. It sends a PUT request to a specified URL with a JSON payload
-# containing the version, display name, and description of a service. If the response is not
-# successful, it prints an error message and returns False. Otherwise, it returns True.
-
-
 def register_service_rApp_catalalogue():
+    """
+    Sends a PUT request to a specified URL with a JSON payload containing the version, display name,
+    and description of a service. If the response is not successful, it prints an error message and returns False.
+    Otherwise, it returns True.
+
+    Returns:
+        bool: True if the request was successful, False otherwise.
+    """
     complete_url = base_url_rApp_catalogue + "/" + SERVICE_NAME
     headers = {"content-type": "application/json"}
     body = {
@@ -55,26 +57,96 @@ def register_service_rApp_catalalogue():
     else:
         return True
 
-
-# This function `get_rics_from_agent()` sends a GET request to the API endpoint `/rics`
-# using the `requests` module. If the response is successful (status code 200),
-# it returns the JSON data from the response. If the response is not successful,
-# it prints an error message and returns an empty dictionary.
 def get_rics_from_agent():
+    """
+    Sends a GET request to the API endpoint `/rics` using the `requests` module.
+    If the response is successful (status code 200), it returns the JSON data from the response.
+    If the response is not successful, it returns an empty dictionary.
+
+    Returns:
+        dict: A dictionary containing the JSON data from the response if the request was successful,
+              an empty dictionary otherwise.
+    """
     resp = requests.get(base_url_pms + "/rics")
     if not resp.ok:
         verboseprint(f"Unable to get Rics {resp.status_code}")
         return {}
     return resp.json()
 
+def put_policy(ric_name, policy_id):
+    """
+    Sends a PUT request to the API endpoint `/policies` using the `requests` module.
+    It creates a random threshold value and replaces the 'XXX' string in the `policy_data` with the threshold value.
+    It then creates a dictionary `body` containing the `ric_name`, `policy_id`, `SERVICE_NAME`, `policy_data`,
+    and `type_to_use`. It sends the PUT request with the `body` and `headers` as parameters.
+    If the response is successful (status code 200), it prints a message indicating that the policy has been updated
+    and returns True. If the response is not successful, it prints an error message and returns False.
 
-# This function `put_policy()` sends a PUT request to the API endpoint `/policies`
-# using the `requests` module. It creates a random threshold value and replaces the 'XXX' string in
-# the `policy_data` with the threshold value. It then creates a dictionary `body` containing the `ric_name`,
-# `policy_id`, `SERVICE_NAME`, `policy_data`, and `type_to_use`. It sends the PUT request with the `body`
-# and `headers` as parameters. If the response is successful (status code 200), it prints a message
-# indicating that the policy has been updated and returns True. If the response is not successful,
-# it prints an error message and returns False.
+    Args:
+        ric_name (str): The name of the RIC.
+        policy_id (str): The ID of the policy.
+
+    Returns:
+        bool: True if the request was successful, False otherwise.
+    """
+    threshold = random.randint(10 ** (15 - 1), (10**15) - 1)
+    complete_url = base_url_pms + "/policies"
+    headers = {"content-type": "application/json"}
+    policy_obj = json.loads(policy_data.replace("XXX", str(threshold)))
+    body = {
+        "ric_id": ric_name,
+        "policy_id": policy_id,
+        "service_id": SERVICE_NAME,
+        "policy_data": policy_obj,
+        "policytype_id": type_to_use,
+    }
+    verboseprint(f"PUT {complete_url} with body {body}")
+    resp = requests.put(complete_url, json=body, headers=headers, verify=False)
+    if not resp.ok:
+        verboseprint(f"Unable to create policy {resp}")
+        print(f"Unable to create policy {resp.text}")
+        return False
+    else:
+        print(f"Updating policy: {policy_id} threshold now: {threshold}")
+        return True
+
+def get_policy_instances():
+    """
+    Sends a GET request to the API endpoint `/policy-instances` using the `requests` module.
+    If the response is successful (status code 200), it returns the JSON data from the response.
+    If the response is not successful, it prints an error message and returns False.
+
+    Returns:
+        dict: A dictionary containing the JSON data from the response if the request was successful,
+              False otherwise.
+    """
+    complete_url = f"{base_url_pms}/policy-instances"
+    resp = requests.get(complete_url)
+    if not resp.ok:
+        verboseprint(f"Unable to get policy {resp}")
+        return False
+    else:
+        verboseprint(f"Policy {resp.text}")
+        return resp.json()
+
+def get_policy_types():
+    """
+    Sends a GET request to the API endpoint `/policy-types` using the `requests` module.
+    If the response is successful (status code 200), it returns the JSON data from the response.
+    If the response is not successful, it prints an error message and returns False.
+
+    Returns:
+        dict: A dictionary containing the JSON data from the response if the request was successful,
+              False otherwise.
+    """
+    complete_url = f"{base_url_pms}/policy-types"
+    resp = requests.get(complete_url)
+    if not resp.ok:
+        verboseprint(f"Unable to get policy types {resp}")
+        return False
+    else:
+        verboseprint(f"Policy types {resp.text}")
+        return resp.json()
 def put_policy(ric_name, policy_id):
     threshold = random.randint(10 ** (15 - 1), (10**15) - 1)
     complete_url = base_url_pms + "/policies"
@@ -97,11 +169,16 @@ def put_policy(ric_name, policy_id):
         print(f"Updating policy: {policy_id} threshold now: {threshold}")
         return True
 
-# This function `get_policy_instances()` sends a GET request to the API endpoint
-# `/policy-instances` using the `requests` module. If the response is successful
-# (status code 200), it returns the JSON data from the response. If the response
-# is not successful, it prints an error message and returns False.
 def get_policy_instances():
+    """
+    Sends a GET request to the API endpoint `/policy-instances` using the `requests` module.
+    If the response is successful (status code 200), it returns the JSON data from the response.
+    If the response is not successful, it prints an error message and returns False.
+
+    Returns:
+        dict: A dictionary containing the JSON data from the response if the request was successful,
+              False otherwise.
+    """
     complete_url = f"{base_url_pms}/policy-instances"
     resp = requests.get(complete_url)
     if not resp.ok:
@@ -111,11 +188,16 @@ def get_policy_instances():
         verboseprint(f"Policy {resp.text}")
         return resp.json()
 
-#The function `get_policy_types()` sends a GET request to the API endpoint
-# `/policy-types` using the `requests` module. If the response is successful
-# (status code 200), it returns the JSON data from the response. If the response
-# is not successful, it prints an error message and returns False.
 def get_policy_types():
+    """
+    Sends a GET request to the API endpoint `/policy-types` using the `requests` module.
+    If the response is successful (status code 200), it returns the JSON data from the response.
+    If the response is not successful, it prints an error message and returns False.
+
+    Returns:
+        dict: A dictionary containing the JSON data from the response if the request was successful,
+              False otherwise.
+    """
     complete_url = f"{base_url_pms}/policy-types"
     resp = requests.get(complete_url)
     if not resp.ok:
@@ -125,13 +207,18 @@ def get_policy_types():
         verboseprint(f"Policy {resp.text}")
         return resp.json()
 
-# The function `delete_policy(policy_id)` sends a DELETE request to the API
-# endpoint `/policies/{policy_id}` using the `requests` module. It creates the
-# complete URL by appending the `policy_id` to the `base_url_pms`. It sends the
-# DELETE request with the `headers` as parameters. If the response is successful
-# (status code 204), it prints a message indicating that the policy has been deleted
-# and returns True. If the response is not successful, it prints an error message and returns False.
 def get_policy(policy_id):
+    """
+    Sends a GET request to the API endpoint `/policies/{policy_id}` using the `requests` module.
+    If the response is successful (status code 200), it prints the JSON data from the response
+    and returns True. If the response is not successful, it prints an error message and returns False.
+
+    Args:
+        policy_id (str): The ID of the policy to retrieve.
+
+    Returns:
+        bool: True if the request was successful, False otherwise.
+    """
     complete_url = f"{base_url_pms}/policies/{policy_id}"
     resp = requests.get(complete_url)
     if not resp.ok:
@@ -144,6 +231,15 @@ def get_policy(policy_id):
         return True
 
 
+# This script is the main entry point for the nonrtric-rapp-helloworld application.
+# It defines a number of command line arguments that can be used to configure the
+# application, and then uses these arguments to set up the necessary connections
+# to the A1 Policy Manager and the rApp Catalogue. Once the connections are set up,
+# the script registers the service with the rApp Catalogue, retrieves the available
+# policy types from the A1 Policy Manager, and then enters a loop where it periodically
+# sends a PUT request to the A1 Policy Manager to update the policy with the specified
+# ID. The script can be terminated by pressing Ctrl-C, at which point it prints out
+# the current policy instances and exits.
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(prog="PROG")
     parser.add_argument(

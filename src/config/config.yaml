@@ -1,0 +1,16 @@
+# This YAML file contains configuration data for the nonrtric-rapp-helloworld application.
+# The 'base_url_rApp_catalogue' key specifies the base URL for the rApp Catalogue service.
+# The 'base_url_pms' key specifies the base URL for the Policy Management Service.
+# The 'type_to_use' key specifies the type to use.
+# The 'ric_to_use' key specifies the RIC to use.
+# The 'body_type_to_use' key specifies the body type to use.
+# The 'body_path_to_use' key specifies the path to the body file to use.
+# The 'policy_id_to_use' key specifies the policy ID to use.
+
+base_url_rApp_catalogue: 'http://rappcatalogueservice.nonrtric.svc.cluster.local:9085/services'
+base_url_pms: 'http://policymanagementservice.nonrtric.svc.cluster.local:9080/a1-policy/v2'
+type_to_use: '2'
+ric_to_use: "ric4"
+body_type_to_use: '2'
+body_path_to_use: 'nonrtric-rapp-helloword/src/pihw_template.json'
+policy_id_to_use: '1'
