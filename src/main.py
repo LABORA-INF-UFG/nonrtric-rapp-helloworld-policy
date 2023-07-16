@@ -8,18 +8,20 @@ import pprint
 import time
 import yaml
 
-VERSION: str = '0.0.1'
-SERVICE_NAME:str = 'HelloWordrApp'
-SERVICE_DESCRIPTION: str = 'Hello Word rApp for testing Non-RT RIC guide development of future rApps and demo purposes'
-SERVICE_DISPLAY_NAME: str = 'Hello Word rApp'
+VERSION: str = "0.0.1"
+SERVICE_NAME: str = "HelloWordrApp"
+SERVICE_DESCRIPTION: str = "Hello Word rApp for testing Non-RT RIC guide development of future rApps and demo purposes"
+SERVICE_DISPLAY_NAME: str = "Hello Word rApp"
 DEFAULT_HOST_PMS: str = "http://policymanagementservice.nonrtric.svc.cluster.local:9080"
 BASE_PATH_PMS: str = "/a1-policy/v2"
-DEFAULT_HOST_rAPP_CATALOGUE: str = "http://rappcatalogueservice.nonrtric.svc.cluster.local:9085"
+DEFAULT_HOST_rAPP_CATALOGUE: str = (
+    "http://rappcatalogueservice.nonrtric.svc.cluster.local:9085"
+)
 BASE_PATH_rAPP_CATALOGUE: str = "/services"
-DEFAULT_POLICY_BODY_PATH: str = 'nonrtric-rapp-helloword/src/pihw_template.json'
-DEFAULT_POLICY_TYPE_ID: str = '2'
-DEFAULT_POLICY_ID: str = '1' 
-DEFAULT_RIC_ID: str = 'ric4'
+DEFAULT_POLICY_BODY_PATH: str = "nonrtric-rapp-helloword/src/pihw_template.json"
+DEFAULT_POLICY_TYPE_ID: str = "2"
+DEFAULT_POLICY_ID: str = "1"
+DEFAULT_RIC_ID: str = "ric4"
 
 
 base_url_rApp_catalogue = DEFAULT_HOST_rAPP_CATALOGUE + BASE_PATH_rAPP_CATALOGUE
@@ -30,20 +32,25 @@ body_type_to_use = DEFAULT_POLICY_TYPE_ID
 body_path_to_use = DEFAULT_POLICY_BODY_PATH
 policy_id_to_use = DEFAULT_POLICY_ID
 
+# This function GitHub Copilot: This function is called `register_service_rApp_catalalogue()`
+# and it is written in Python. It sends a PUT request to a specified URL with a JSON payload
+# containing the version, display name, and description of a service. If the response is not
+# successful, it prints an error message and returns False. Otherwise, it returns True.
+
 
 def register_service_rApp_catalalogue():
-    complete_url = base_url_rApp_catalogue + '/'+ SERVICE_NAME
-    headers = {'content-type': 'application/json'}
+    complete_url = base_url_rApp_catalogue + "/" + SERVICE_NAME
+    headers = {"content-type": "application/json"}
     body = {
         "version": VERSION,
         "display_name": SERVICE_DISPLAY_NAME,
-        "description": SERVICE_DESCRIPTION
+        "description": SERVICE_DESCRIPTION,
     }
-    verboseprint(f'PUT {complete_url} with body {body}')
+    verboseprint(f"PUT {complete_url} with body {body}")
     resp = requests.put(complete_url, json=body, headers=headers, verify=False)
     if not resp.ok:
-        verboseprint(f'Unable to register rApp {resp}')
-        print(f'Unable to register rApp {resp.text}')
+        verboseprint(f"Unable to register rApp {resp}")
+        print(f"Unable to register rApp {resp.text}")
         return False
     else:
         return True
@@ -54,91 +61,114 @@ def register_service_rApp_catalalogue():
 # it returns the JSON data from the response. If the response is not successful,
 # it prints an error message and returns an empty dictionary.
 def get_rics_from_agent():
-    resp = requests.get(base_url_pms + '/rics')
+    resp = requests.get(base_url_pms + "/rics")
     if not resp.ok:
-        verboseprint(f'Unable to get Rics {resp.status_code}')
+        verboseprint(f"Unable to get Rics {resp.status_code}")
         return {}
     return resp.json()
 
 
+# This function `put_policy()` sends a PUT request to the API endpoint `/policies`
+# using the `requests` module. It creates a random threshold value and replaces the 'XXX' string in
+# the `policy_data` with the threshold value. It then creates a dictionary `body` containing the `ric_name`,
+# `policy_id`, `SERVICE_NAME`, `policy_data`, and `type_to_use`. It sends the PUT request with the `body`
+# and `headers` as parameters. If the response is successful (status code 200), it prints a message
+# indicating that the policy has been updated and returns True. If the response is not successful,
+# it prints an error message and returns False.
 def put_policy(ric_name, policy_id):
-    threshold  = random.randint(10 ** (15 - 1), (10 ** 15) - 1)
-    complete_url = base_url_pms + '/policies'
-    headers = {'content-type': 'application/json'}
-    policy_obj = json.loads(policy_data.replace('XXX', str(threshold)))
+    threshold = random.randint(10 ** (15 - 1), (10**15) - 1)
+    complete_url = base_url_pms + "/policies"
+    headers = {"content-type": "application/json"}
+    policy_obj = json.loads(policy_data.replace("XXX", str(threshold)))
     body = {
         "ric_id": ric_name,
         "policy_id": policy_id,
         "service_id": SERVICE_NAME,
         "policy_data": policy_obj,
-        "policytype_id": type_to_use
+        "policytype_id": type_to_use,
     }
-    verboseprint(f'PUT {complete_url} with body {body}')
+    verboseprint(f"PUT {complete_url} with body {body}")
     resp = requests.put(complete_url, json=body, headers=headers, verify=False)
     if not resp.ok:
-        verboseprint(f'Unable to create policy {resp}')
-        print(f'Unable to create policy {resp.text}')
+        verboseprint(f"Unable to create policy {resp}")
+        print(f"Unable to create policy {resp.text}")
         return False
     else:
-        print(f'Updating policy: {policy_id} threshold now: {threshold}')
+        print(f"Updating policy: {policy_id} threshold now: {threshold}")
         return True
 
+# This function `get_policy_instances()` sends a GET request to the API endpoint
+# `/policy-instances` using the `requests` module. If the response is successful
+# (status code 200), it returns the JSON data from the response. If the response
+# is not successful, it prints an error message and returns False.
 def get_policy_instances():
-    complete_url = f'{base_url_pms}/policy-instances'
+    complete_url = f"{base_url_pms}/policy-instances"
     resp = requests.get(complete_url)
     if not resp.ok:
-        verboseprint(f'Unable to get policy {resp}')
+        verboseprint(f"Unable to get policy {resp}")
         return False
     else:
-        verboseprint(f'Policy {resp.text}')
+        verboseprint(f"Policy {resp.text}")
         return resp.json()
 
+#The function `get_policy_types()` sends a GET request to the API endpoint
+# `/policy-types` using the `requests` module. If the response is successful
+# (status code 200), it returns the JSON data from the response. If the response
+# is not successful, it prints an error message and returns False.
 def get_policy_types():
-    complete_url = f'{base_url_pms}/policy-types'
+    complete_url = f"{base_url_pms}/policy-types"
     resp = requests.get(complete_url)
     if not resp.ok:
-        verboseprint(f'Unable to get policy {resp}')
+        verboseprint(f"Unable to get policy {resp}")
         return False
     else:
-        verboseprint(f'Policy {resp.text}')
+        verboseprint(f"Policy {resp.text}")
         return resp.json()
-        
-    
+
+# The function `delete_policy(policy_id)` sends a DELETE request to the API
+# endpoint `/policies/{policy_id}` using the `requests` module. It creates the
+# complete URL by appending the `policy_id` to the `base_url_pms`. It sends the
+# DELETE request with the `headers` as parameters. If the response is successful
+# (status code 204), it prints a message indicating that the policy has been deleted
+# and returns True. If the response is not successful, it prints an error message and returns False.
 def get_policy(policy_id):
-    complete_url = f'{base_url_pms}/policies/{policy_id}'
+    complete_url = f"{base_url_pms}/policies/{policy_id}"
     resp = requests.get(complete_url)
     if not resp.ok:
-        verboseprint(f'Unable to get policy {resp}')
-        print(f'Unable to get policy {resp.text}')
+        verboseprint(f"Unable to get policy {resp}")
+        print(f"Unable to get policy {resp.text}")
         return False
     else:
-        verboseprint(f'Policy {resp.text}')
-        print(f'Policy {resp.text}')
+        verboseprint(f"Policy {resp.text}")
+        print(f"Policy {resp.text}")
         return True
 
 
-if __name__ == '__main__':
-    parser = argparse.ArgumentParser(prog='PROG')
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(prog="PROG")
     parser.add_argument(
-        '--rAppHost', help='The host of the A1 PMS, e.g. http://localhost:9085')
+        "--rAppHost", help="The host of the A1 PMS, e.g. http://localhost:9085"
+    )
+    parser.add_argument("--ricId", help="The ID of the policy type to use")
     parser.add_argument(
-        '--ricId', help='The ID of the policy type to use')
+        "--pmsHost", help="The host of the A1 PMS, e.g. http://localhost:8081"
+    )
+    parser.add_argument("--policyId", help="The ID of the policy to use")
+    parser.add_argument("--policyTypeId", help="The ID of the policy type to use")
     parser.add_argument(
-        '--pmsHost', help='The host of the A1 PMS, e.g. http://localhost:8081')
+        "--policyBodyPath", help="The path to the JSON body of the policy to create"
+    )
     parser.add_argument(
-        '--policyId', help='The ID of the policy to use')
-    parser.add_argument(
-        '--policyTypeId', help='The ID of the policy type to use')
-    parser.add_argument(
-        '--policyBodyPath', help='The path to the JSON body of the policy to create')
-    parser.add_argument('-v', '--verbose', action='store_true',
-                        help='Turn on verbose printing')
-    parser.add_argument('--version', action='version', version='%(prog)s 1.1')
+        "-v", "--verbose", action="store_true", help="Turn on verbose printing"
+    )
+    parser.add_argument("--version", action="version", version="%(prog)s 1.1")
     args = vars(parser.parse_args())
 
-    if args['verbose']:
+    if args["verbose"]:
+
         def verboseprint(*args, **kwargs):
             print(*args, **kwargs)
+
     else:
         verboseprint = lambda *a, **k: None  # do-nothing function
 
@@ -146,7 +176,7 @@ if __name__ == '__main__':
         base_url_rApp_catalogue = args["pmsHost"] + BASE_PATH_rAPP_CATALOGUE
     else:
         base_url_rApp_catalogue = DEFAULT_HOST_rAPP_CATALOGUE + BASE_PATH_rAPP_CATALOGUE
-    
+
     if args["pmsHost"]:
         base_url_pms = args["pmsHost"] + BASE_PATH_PMS
     else:
@@ -174,41 +204,41 @@ if __name__ == '__main__':
 
     try:
         rics_from_agent = get_rics_from_agent()
-        verboseprint(f'Got RICs from agent: {rics_from_agent}')
-        #print(f'Got RICs from agent: {rics_from_agent}')
+        verboseprint(f"Got RICs from agent: {rics_from_agent}")
     except ConnectionError:
-        print(f'A1 Policy Manager is not answering on {base_url_pms}, cannot start!')
-    
+        print(f"A1 Policy Manager is not answering on {base_url_pms}, cannot start!")
 
-    if not os.path.exists('config/config.yaml'):
-        print(f'Config file config.yaml does not exist, using default configuration or parameters.')
+    if not os.path.exists("config/config.yaml"):
+        print(
+            f"Config file config.yaml does not exist, using default configuration or parameters."
+        )
     else:
-        print(f'Using configurations from config.yaml.')
+        print(f"Using configurations from config.yaml.")
 
-        with open('config/config.yaml', 'r') as f:
+        with open("config/config.yaml", "r") as f:
             config = yaml.safe_load(f)
 
-        base_url_rApp_catalogue = config['base_url_rApp_catalogue']
-        base_url_pms = config['base_url_pms']
-        type_to_use = config['type_to_use']
-        ric_to_use = config['ric_to_use']
-        body_type_to_use = config['body_type_to_use']
-        body_path_to_use = config['body_path_to_use']
-        policy_id_to_use = config['policy_id_to_use']
+        base_url_rApp_catalogue = config["base_url_rApp_catalogue"]
+        base_url_pms = config["base_url_pms"]
+        type_to_use = config["type_to_use"]
+        ric_to_use = config["ric_to_use"]
+        body_type_to_use = config["body_type_to_use"]
+        body_path_to_use = config["body_path_to_use"]
+        policy_id_to_use = config["policy_id_to_use"]
 
-    print(f'base_url_rApp_catalogue: {base_url_rApp_catalogue}')
-    print(f'base_url_pms: {base_url_pms}')
-    print(f'type_to_use: {type_to_use}')
-    print(f'ric_to_use: {ric_to_use}')
-    print(f'body_type_to_use: {body_type_to_use}')
-    print(f'body_path_to_use: {body_path_to_use}')
-    print(f'policy_id_to_use: {policy_id_to_use}')
+    print(f"base_url_rApp_catalogue: {base_url_rApp_catalogue}")
+    print(f"base_url_pms: {base_url_pms}")
+    print(f"type_to_use: {type_to_use}")
+    print(f"ric_to_use: {ric_to_use}")
+    print(f"body_type_to_use: {body_type_to_use}")
+    print(f"body_path_to_use: {body_path_to_use}")
+    print(f"policy_id_to_use: {policy_id_to_use}")
 
     with open(body_path_to_use) as json_file:
         policy_data = json_file.read()
-        verboseprint(f'Policy body: {policy_data}')
+        verboseprint(f"Policy body: {policy_data}")
 
-    print(f'Registring in rApp catalog  {SERVICE_NAME}')
+    print(f"Registring in rApp catalog  {SERVICE_NAME}")
     register_service_rApp_catalalogue()
     pprint.pprint(get_policy_types())
     try:
