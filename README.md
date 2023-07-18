@@ -6,6 +6,8 @@ This rAPP aims to provide basic implementation of:
 
 2. A1 interfaces interactions: Interactions with a1 interface to receive policy updates and send policy decisions.
 
+![Sequece](images/rApp-start-sequence.png)
+
 ## Introduction
 This document provides guidelines on how to install and configure the HW Python xAPP in various environments/operating modes.
 The audience of this document is assumed to have good knowledge in RIC Platform.
