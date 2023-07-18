@@ -12,7 +12,7 @@ VERSION: str = "0.0.1"
 SERVICE_NAME: str = "HelloWordrApp"
 SERVICE_DESCRIPTION: str = "Hello Word rApp for testing Non-RT RIC guide development of future rApps and demo purposes"
 SERVICE_DISPLAY_NAME: str = "Hello Word rApp"
-DEFAULT_HOST_PMS: str = "http://policymanagementservice.nonrtric.svc.cluster.local:9080"
+DEFAULT_HOST_PMS: str = "http://nonrtricgateway.nonrtric.svc.cluster.local:9090"
 BASE_PATH_PMS: str = "/a1-policy/v2"
 DEFAULT_HOST_rAPP_CATALOGUE: str = (
     "http://rappcatalogueservice.nonrtric.svc.cluster.local:9085"

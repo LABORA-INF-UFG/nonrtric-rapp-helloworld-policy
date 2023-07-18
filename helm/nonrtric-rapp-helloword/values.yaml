@@ -9,7 +9,7 @@ service:
 
 config:
   base_url_rApp_catalogue: 'http://rappcatalogueservice.nonrtric.svc.cluster.local:9085/services'
-  base_url_pms: 'http://policymanagementservice.nonrtric.svc.cluster.local:9080/a1-policy/v2'
+  base_url_pms: 'http://nonrtricgateway.nonrtric.svc.cluster.local:9090/a1-policy/v2'
   type_to_use: '2'
   ric_to_use: "ric4"
   body_type_to_use: '2'
