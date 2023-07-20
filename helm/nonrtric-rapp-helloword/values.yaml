@@ -3,8 +3,9 @@ image:
   tag: 0.0.1
   imagePullPolicy: Always
 service:
-  name: myapp
+  name: hellowordrapp
   port: 80
+  targetPort: 5000
   type: ClusterIP
 
 config:
