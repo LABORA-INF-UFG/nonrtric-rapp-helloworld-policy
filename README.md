@@ -14,7 +14,7 @@ The audience of this document is assumed to have good knowledge of the RIC Platf
 
 ## Preface
 This rAPP can be run directly as a Linux binary, as a docker image, or in a pod in a Kubernetes environment.  The first
-two can be used for dev testing. The last option is how an xAPP is deployed in the RAN Intelligent Controller environment.
+two can be used for dev testing. The last option is how an rApp is deployed in the RAN Intelligent Controller environment.
 This covers all three methods. 
 
 1. Docker 
