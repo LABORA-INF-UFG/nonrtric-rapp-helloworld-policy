@@ -1,5 +1,5 @@
-# Hello World rApp in Python
-This repository contains open-source code for a prototype python xAPP for Non Real-time RAN Intelligent Controller.
+# Hello World Policy rApp in Python
+This repository contains open-source code for a prototype python rAPP for Non Real-time RAN Intelligent Controller.
 
 This rAPP aims to provide a basic implementation of:
 1. rApp Catalogue: Interactions with rApp catalog to register and unregister the rApp.
