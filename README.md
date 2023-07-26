@@ -9,11 +9,11 @@ This rAPP aims to provide basic implementation of:
 ![Sequece](images/rApp-start-sequence.png)
 
 ## Introduction
-This document provides guidelines on how to install and configure the HW Python xAPP in various environments/operating modes.
-The audience of this document is assumed to have good knowledge in RIC Platform.
+This document provides guidelines on installing and configuring the HW Python rAPP in various environments/operating modes.
+The audience of this document is assumed to have good knowledge of the RIC Platform, mainly Non-RT RIC.
 
 ## Preface
-This xAPP can be run directly as a Linux binary, as a docker image, or in a pod in a Kubernetes environment.  The first
+This rAPP can be run directly as a Linux binary, as a docker image, or in a pod in a Kubernetes environment.  The first
 two can be used for dev testing. The last option is how an xAPP is deployed in the RAN Intelligent Controller environment.
 This covers all three methods. 
 
@@ -21,9 +21,9 @@ This covers all three methods.
 2. Linux Binary
 3. Kubernetes 
 
-The Hello Word rApp can be either tested as a Linux binary or as a docker image.
+The Hello Word rApp ICS can be tested as a Linux binary or a docker image.
 
-1. **Linux binary**: The HW xAPP may be compiled and invoked directly. Pre-requisite software packages that must be installed prior to compiling are documented in the Dockerfile in the repository.
+1. **Linux binary**: The HW rAPP may be compiled and invoked directly. Pre-requisite software packages that must be installed before compiling are documented in the Dockerfile in the repository.
 
 2. **Docker Image**: For building docker images, the Docker environment must be present in the system. The Dockerfile in the repository can be used to build the docker image. The docker image can be built using the following command:
 ```shell
