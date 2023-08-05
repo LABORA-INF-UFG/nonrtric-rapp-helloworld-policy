@@ -14,9 +14,7 @@ SERVICE_DESCRIPTION: str = "Hello Word rApp for testing Non-RT RIC guide develop
 SERVICE_DISPLAY_NAME: str = "Hello Word rApp"
 DEFAULT_HOST_PMS: str = "http://nonrtricgateway.nonrtric.svc.cluster.local:9090"
 BASE_PATH_PMS: str = "/a1-policy/v2"
-DEFAULT_HOST_rAPP_CATALOGUE: str = (
-    "http://rappcatalogueservice.nonrtric.svc.cluster.local:9085"
-)
+DEFAULT_HOST_rAPP_CATALOGUE: str = "http://rappcatalogueservice.nonrtric.svc.cluster.local:9085"
 BASE_PATH_rAPP_CATALOGUE: str = "/services"
 DEFAULT_POLICY_BODY_PATH: str = "nonrtric-rapp-helloword/src/pihw_template.json"
 DEFAULT_POLICY_TYPE_ID: str = "2"
