@@ -1,31 +1,31 @@
-# Hello World rApp in Python
-This repository contains open-source code for a prototype python xAPP for Non Real-time RAN Intelligent Controller.
+# Hello World Policy rApp in Python
+This repository contains open-source code for a prototype python rAPP for Non Real-time RAN Intelligent Controller.
 
-This rAPP aims to provide basic implementation of:
-1. rApp Catalogue: Interactions with rApp catalogue to register and unregister the rApp.
+This rAPP aims to provide a basic implementation of:
+1. rApp Catalogue: Interactions with rApp catalog to register and unregister the rApp.
 
-2. A1 interfaces interactions: Interactions with a1 interface to receive policy updates and send policy decisions.
+2. A1 interface interactions: Interactions with the a1 interface to receive policy updates and send policy decisions.
 
 ![Sequece](images/rApp-start-sequence.png)
 
 ## Introduction
-This document provides guidelines on how to install and configure the HW Python xAPP in various environments/operating modes.
-The audience of this document is assumed to have good knowledge in RIC Platform.
+This document provides guidelines on installing and configuring the HW Python rAPP in various environments/operating modes.
+The audience of this document is assumed to have good knowledge of the RIC Platform, mainly Non-RT RIC.
 
 ## Preface
-This xAPP can be run directly as a Linux binary, as a docker image, or in a pod in a Kubernetes environment.  The first
-two can be used for dev testing. The last option is how an xAPP is deployed in the RAN Intelligent Controller environment.
+This rAPP can be run directly as a Linux binary, as a docker image, or in a pod in a Kubernetes environment.  The first
+two can be used for dev testing. The last option is how an rApp is deployed in the RAN Intelligent Controller environment.
 This covers all three methods. 
 
 1. Docker 
 2. Linux Binary
 3. Kubernetes 
 
-The Hello Word rApp can be either tested as a Linux binary or as a docker image.
+The Hello Word rApp can be tested as a Linux binary or a docker image.
 
-1. **Linux binary**: The HW xAPP may be compiled and invoked directly. Pre-requisite software packages that must be installed prior to compiling are documented in the Dockerfile in the repository.
+1. **Linux binary**: The HW rAPP may be compiled and invoked directly. Pre-requisite software packages that must be installed before compiling are documented in the Dockerfile in the repository.
 
-2. **Docker Image**: For building docker images, the Docker environment must be present in the system. The Dockerfile in the repository can be used to build the docker image. The docker image can be built using the following command:
+2. **Docker Image**: For building docker image, the Docker environment must be present in the system. The Dockerfile in the repository can be used to build the docker image. The docker image can be built using the following command:
 ```shell
 docker build -t hw-python .
 Sending build context to Docker daemon  13.13MB
@@ -93,7 +93,7 @@ This YAML file houses configuration data for the nonrtric-rapp-helloworld applic
 
 7. policy_id_to_use: This key determines the policy ID to use. Here, it's specified as '1'.
 
-Remember to replace these example values with your actual data as per the requirements of your application and infrastructure.
+Remember to replace these example values with your actual data per your application and infrastructure requirements.
 
 ```yaml
 base_url_rApp_catalogue: 'http://rappcatalogueservice.nonrtric.svc.cluster.local:9085/services'
@@ -106,9 +106,9 @@ policy_id_to_use: '1'
 ```
 
 ## App Deployment
-You can run the hekllo Word APP directly in your linux enviroment or in a Kubernetes cluster. After the deploy of the app, you can check the logs to see the interactions with the A1 interface. Basically after the start the rApp register in rApp catalogue e and subscribe to the A1 interface. After that, the rApp update the policy type 2 and send the policy decision to the A1 interface each every 5 seconds.
+You can run the Hello Word rAPP directly in your Linux environment or in a Kubernetes cluster. After the app's deployment, you can check the logs to see the interactions with the A1 interface. Basically, after the start, the rApp register in rApp catalog e and subscribe to the A1 interface. After that, the rApp updates policy type 2 and sends the policy decision to the A1 interface every 5 seconds.
 
-```
+```log
 Using configurations from config.yaml.
 base_url_rApp_catalogue: http://rappcatalogueservice.nonrtric.svc.cluster.local:9085/services
 base_url_pms: http://policymanagementservice.nonrtric.svc.cluster.local:9080/a1-policy/v2
@@ -117,7 +117,7 @@ ric_to_use: ric4
 body_type_to_use: 2
 body_path_to_use: pihw_template.json
 policy_id_to_use: 1
-Registring in rApp catalog  HelloWordrApp
+Registering in rApp catalog  HelloWordrApp
 {'policytype_ids': ['', '2']}
 Updating policy: 1 threshold now: 163869198317292
 Updating policy: 1 threshold now: 162083929207809
