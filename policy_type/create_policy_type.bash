@@ -1,6 +1,6 @@
 #!/bin/bash
 
-curl -v -X PUT http://service-ricplt-a1mediator-http.ricplt.svc.cluster.local:10000/A1-P/v2/policytypes/2 \
+curl -v -X PUT http://service-ricplt-a1mediator-http.ricplt.svc.cluster.local:10000/a1-p/policytypes/2 \
 -H "Content-Type: application/json" \
 -d '{
     "name": "hwpolicy",
