@@ -53,7 +53,7 @@ Successfully tagged hw-python:latest
 Firstly, you need to generate the policy type on the Near-Real Time RIC that will receive the policies. To achieve this, you can execute the following command on the Near-RT RIC.
 Please note, you have the flexibility to modify the URL of the a1mediator as per your specific setup. The given example is compatible with the default configuration of release G in a Kubernetes environment.
 ```shell
-curl -v -X PUT http://service-ricplt-a1mediator-http.ricplt.svc.cluster.local:10000/a1-p/policytypes/2 \
+curl -v -X PUT http://service-ricplt-a1mediator-http.ricplt.svc.cluster.local:10000/A1-P/v2/policytypes/2 \
 -H "Content-Type: application/json" \
 -d '{
     "name": "hwpolicy",
